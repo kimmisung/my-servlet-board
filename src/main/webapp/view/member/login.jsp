@@ -130,8 +130,6 @@
 </style>
 
 <body>
-
-<body>
 <header>
     <a class="logo" href="/board/list"><img src="https://poiemaweb.com/img/logo.png"></a>
     <nav>
