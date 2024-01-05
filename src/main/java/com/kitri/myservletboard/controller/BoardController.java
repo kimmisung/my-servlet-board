@@ -1,5 +1,8 @@
 package com.kitri.myservletboard.controller;
 
+import com.kitri.myservletboard.controller.data.Board;
+import com.kitri.myservletboard.service.BoardService;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,9 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 @WebServlet("/board/*")
 public class BoardController extends HttpServlet {
+    BoardService boardService = BoardService.getInstance();
+
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //request 클라이언트의 요청이 담겨 옴, response로 응답해 줌
@@ -30,6 +36,10 @@ public class BoardController extends HttpServlet {
         String view = "/view/board/";
 
         if (command.equals("/board/list")){
+            ArrayList<Board> boards = boardService.getBoards(); //서비스를 통해 게시판 리스트를 가져옴
+            //가져온 리스트를 jsp한테 넘겨줘야함 -> jsp가 동적으로 만들어줌
+            request.setAttribute("boards",boards); //저장소 역할(key,value)형식
+
             //request.getRequestDispatcher("/view/board/list.jsp");
             view += "list.jsp";
         }
