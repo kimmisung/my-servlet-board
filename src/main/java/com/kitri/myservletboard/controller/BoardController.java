@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @WebServlet("/board/*")
@@ -20,7 +21,10 @@ public class BoardController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //request 클라이언트의 요청이 담겨 옴, response로 응답해 줌
+
+        //브라우저에서 작성한 내용을 불러올 때
         request.setCharacterEncoding("UTF-8");
+
         // HTML이 UTF-8 형식이라는 것을 브라우저에게 전달
         response.setContentType("text/html; charset=UTF-8");
         PrintWriter out = response.getWriter();
@@ -35,21 +39,38 @@ public class BoardController extends HttpServlet {
 
         String view = "/view/board/";
 
-        if (command.equals("/board/list")){
+        if (command.equals("/board/list")) {
             ArrayList<Board> boards = boardService.getBoards(); //서비스를 통해 게시판 리스트를 가져옴
             //가져온 리스트를 jsp한테 넘겨줘야함 -> jsp가 동적으로 만들어줌
-            request.setAttribute("boards",boards); //저장소 역할(key,value)형식
+            request.setAttribute("boards", boards); //저장소 역할(key,value)형식
 
             //request.getRequestDispatcher("/view/board/list.jsp");
             view += "list.jsp";
-        }
-        else if (command.equals("/board/createForm")){
+        } else if (command.equals("/board/createForm")) {
             view += "createForm.jsp";
-        }
-        else if (command.contains("/board/updateForm")){
+        } else if (command.contains("/board/updateForm")) {
             view += "updateForm.jsp";
-        }
-        else if (command.contains("/board/detail")){
+        } else if (command.equals("/board/create")) {
+            //데이터를 읽고
+            //등록시키면 된다
+
+            String title = request.getParameter("title"); //제목 (.jsp파일에 지정된 name을 보면된다
+            String content = request.getParameter("content"); //내용
+            String writer = request.getParameter("writer"); //작성자
+
+            //보드 객체로 넘겨주기로 약속했기 때문에, Board 객체를 만들어 주어야 한다
+            //id -> null을 넣어줄 수 있는 것은 object 타입이여서 가능 (고유의 식별자이기 때문에 따로 지정하지 않을 예정)
+            //조회수와 댓글수는 처음 생성 시 0으로 주면 됨
+            //게시판 객체 생성
+            Board board = new Board(null, title, content, writer, LocalDateTime.now(), 0,0);
+            boardService.addBoard(board);
+
+            //생성된지 확인하려면 list로 보내주기
+            response.sendRedirect("/board/list");
+            return;
+
+
+        } else if (command.contains("/board/detail")) {
             // /board/detail?id=3
             // id에 해당하는 게시판 하나를 가져오면 된다
             // 클라이언트의 요청이 서버로 들어올 때 HttpServletRequest -> request를 통해 들어온다
@@ -61,17 +82,13 @@ public class BoardController extends HttpServlet {
             //board 데이터를 detail.jsp 에 전달하기 위해 어딘가에 담아줘야한다.
             request.setAttribute("board", board);
             view += "detail.jsp";
-        }
-        else if (command.equals("/board/join")){
+        } else if (command.equals("/board/join")) {
 
-        }
-        else if (command.equals("/board/login")){
+        } else if (command.equals("/board/login")) {
 
-        }
-        else if (command.equals("/board/registration")){
+        } else if (command.equals("/board/registration")) {
 
-        }
-        else if (command.contains("/board/updateForm")){
+        } else if (command.contains("/board/updateForm")) {
             view += "updateForm.jsp";
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher(view);

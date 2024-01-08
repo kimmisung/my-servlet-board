@@ -12,6 +12,7 @@ public class Board {
     private int viewCount;
     private int commentCount;
 
+
     public Board() {
     }
 

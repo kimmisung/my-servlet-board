@@ -14,4 +14,6 @@ public interface BoardDao {
     public void save(Board board);
     public void update(Board board);
     public void delete(Board board);
+
+
 }

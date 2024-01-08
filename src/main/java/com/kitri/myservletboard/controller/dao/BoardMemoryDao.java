@@ -1,4 +1,5 @@
 package com.kitri.myservletboard.controller.dao;
+
 import com.kitri.myservletboard.controller.data.Board;
 import com.kitri.myservletboard.service.BoardService;
 
@@ -8,7 +9,8 @@ import java.util.ArrayList;
 public class BoardMemoryDao implements BoardDao { //implements한 인터페이스 메소드 재정의가 필요
 
     private static final BoardMemoryDao instance = new BoardMemoryDao(); //싱글톤 생성
-    public static BoardMemoryDao getInstance(){
+
+    public static BoardMemoryDao getInstance() {
         return instance;
     }
 
@@ -28,6 +30,7 @@ public class BoardMemoryDao implements BoardDao { //implements한 인터페이�
         memoryBoardDB.add(new Board(10L, "열번째 글입니다!!!", "내용10", "박세한", LocalDateTime.now(), 10, 1));
     }
 
+
     @Override
     public ArrayList<Board> getAll() {
         return memoryBoardDB;
@@ -42,6 +45,22 @@ public class BoardMemoryDao implements BoardDao { //implements한 인터페이�
 
     @Override
     public void save(Board board) {
+        //id 자동 생성 로직 구현 (단, id가 기존 id와 중복되지 않도록) -> board id 추가
+        Long id = 0L;
+        boolean flag = false;
+        while (!flag) {
+            flag = true;
+            id++; //1씩 증가 2, 3, ...10, 11
+
+            for (Board b : memoryBoardDB) {
+                if (id == b.getId()) {
+                    //중복
+                    flag = false;
+                    break;
+                }
+            }
+        }
+        board.setId(id);
         memoryBoardDB.add(board);
     }
 
