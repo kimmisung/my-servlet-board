@@ -21,6 +21,7 @@ public class BoardController extends HttpServlet {
 
         out.println("<h1>요청을 잘 응답받았습니다!</h1>");
 
+
         //URL을 파싱해서 어떤 요청인지 파악 -> request
         String requestURI = request.getRequestURI();  //URL주소 확인할 수 있음 ex)/board/list
         String contextPath = request.getContextPath(); // / or 공백
@@ -36,8 +37,17 @@ public class BoardController extends HttpServlet {
         else if (command.equals("/board/createForm")){
             view += "createForm.jsp";
         }
+        else if (command.equals("/board/create")){
+
+        }
         else if (command.contains("/board/updateForm")){
             view += "updateForm.jsp";
+        }
+        else if (command.contains("board/update?id=")){
+
+        }
+        else if (command.equals("board/delete")){
+
         }
         else if (command.equals("/board/join")){
 
@@ -48,9 +58,7 @@ public class BoardController extends HttpServlet {
         else if (command.equals("/board/registration")){
 
         }
-        else if (command.contains("/board/updateForm")){
-            view += "updateForm.jsp";
-        }
+
         RequestDispatcher dispatcher = request.getRequestDispatcher(view);
         dispatcher.forward(request, response);
 
