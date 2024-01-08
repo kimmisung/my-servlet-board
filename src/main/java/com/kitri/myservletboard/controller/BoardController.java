@@ -48,8 +48,31 @@ public class BoardController extends HttpServlet {
             view += "list.jsp";
         } else if (command.equals("/board/createForm")) {
             view += "createForm.jsp";
+
         } else if (command.contains("/board/updateForm")) {
+            //상세 페이지의 내욜을 채워서 달라
+            String id = request.getParameter("id");
+            Board board = boardService.getBoard(Long.parseLong(id));
+            request.setAttribute("board", board);
             view += "updateForm.jsp";
+
+        }else if (command.contains("/board/update")){
+            //수정폼에서 보낸 데이터를 읽는다
+            //수정하려는 데이터를 수정한다
+            //식별자 id를 함께 보내주어야 함
+
+            Long id = Long.parseLong(request.getParameter("id"));
+            String title = request.getParameter("title");
+            String content = request.getParameter("content");
+
+            //board로 넘겨주는 것은 올바른 방법은 아님 -> dto, VO형태의 데이터 타입을 사용할 예정
+            Board board = new Board(id, title, content, null, LocalDateTime.now(), 0,0);
+            boardService.updateBoard(board);
+
+//          리다이렉트로 리스트로 보내주기
+            response.sendRedirect("/board/list");
+            return;
+
         } else if (command.equals("/board/create")) {
             //데이터를 읽고
             //등록시키면 된다
@@ -62,13 +85,20 @@ public class BoardController extends HttpServlet {
             //id -> null을 넣어줄 수 있는 것은 object 타입이여서 가능 (고유의 식별자이기 때문에 따로 지정하지 않을 예정)
             //조회수와 댓글수는 처음 생성 시 0으로 주면 됨
             //게시판 객체 생성
-            Board board = new Board(null, title, content, writer, LocalDateTime.now(), 0,0);
+            Board board = new Board(null, title, content, writer, LocalDateTime.now(), 0, 0);
             boardService.addBoard(board);
 
             //생성된지 확인하려면 list로 보내주기
             response.sendRedirect("/board/list");
             return;
 
+        } else if (command.contains("/board/delete")){
+            Long id = Long.parseLong(request.getParameter("id"));
+            Board board = new Board(id, null, null, null, null, 0,0);
+            boardService.deleteBoard(board);
+
+            response.sendRedirect("/board/list");
+            return;
 
         } else if (command.contains("/board/detail")) {
             // /board/detail?id=3
@@ -88,8 +118,6 @@ public class BoardController extends HttpServlet {
 
         } else if (command.equals("/board/registration")) {
 
-        } else if (command.contains("/board/updateForm")) {
-            view += "updateForm.jsp";
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher(view);
         dispatcher.forward(request, response);

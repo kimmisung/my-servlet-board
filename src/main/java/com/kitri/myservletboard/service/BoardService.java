@@ -11,9 +11,7 @@ public class BoardService { //컨트롤러에게 서비스를 할당받을 예�
 
     //싱글톤으로 생성
     private BoardService() {
-    }
-
-    ;
+    };
 
     private static final BoardService instance = new BoardService();
 
