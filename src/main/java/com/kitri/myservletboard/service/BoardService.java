@@ -24,6 +24,10 @@ public class BoardService { //컨트롤러에게 서비스를 할당받을 예�
         return boardDao.getAll(); //역할 위임의 개념
     }
 
+    public Board getBoard(Long id) {
+        return boardDao.getById(id);
+    }
+
     public void addBoard(Board board) {
         boardDao.save(board);
     }
