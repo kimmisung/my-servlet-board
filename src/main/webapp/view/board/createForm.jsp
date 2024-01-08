@@ -94,6 +94,7 @@
         .nav-items>li>a:hover {
             color: rgba(0, 0, 0, 0.8);
         }
+
     </style>
 </head>
 
@@ -104,7 +105,6 @@
         <ul class="nav-items">
             <li><a href="/board/list">게시글목록</a></li>
             <li><a href="/board/createForm">게시글등록</a></li>
-            <li><a href="/board/updateForm">게시글수정</a></li>
             <li><a href="/view/member/join.jsp">회원가입</a></li>
             <li><a href="/view/member/registration.jsp">회원정보수정</a></li>
             <li><a href="/view/member/login.jsp">로그인</a></li>
@@ -135,17 +135,11 @@
                             작성자를 입력해주세요.
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="name">비밀번호</label>
-                        <input type="password" class="form-control" id="password" placeholder="비밀번호를 입력해주세요" value="" required>
-                        <div class="invalid-feedback">
-                            비밀번호를 입력해주세요.
-                        </div>
-                    </div>
+
                 </div>
                 <div class="mb-3">
-                    <label for="contents" class="form-label">내용</label>
-                    <textarea name="contents" class="form-control" cols="30" rows="5" placeholder="내용을 입력해주세요"></textarea>
+                    <label for="content" class="form-label">내용</label>
+                    <textarea name="content" class="form-control" cols="30" rows="5" placeholder="내용을 입력해주세요"></textarea>
                 </div>
                 <br>
                 <div class="row">
