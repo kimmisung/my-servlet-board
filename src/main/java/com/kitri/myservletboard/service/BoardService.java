@@ -11,7 +11,9 @@ public class BoardService { //컨트롤러에게 서비스를 할당받을 예�
 
     //싱글톤으로 생성
     private BoardService() {
-    };
+    }
+
+    ;
 
     private static final BoardService instance = new BoardService();
 
@@ -22,6 +24,10 @@ public class BoardService { //컨트롤러에게 서비스를 할당받을 예�
     //게시판 리스트 가져오는 로직
     public ArrayList<Board> getBoards() {
         return boardDao.getAll(); //역할 위임의 개념
+    }
+
+    public Board getBoard(Long id) {
+        return boardDao.getById(id);
     }
 
     public void addBoard(Board board) {

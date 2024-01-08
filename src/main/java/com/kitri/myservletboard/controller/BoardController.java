@@ -49,6 +49,19 @@ public class BoardController extends HttpServlet {
         else if (command.contains("/board/updateForm")){
             view += "updateForm.jsp";
         }
+        else if (command.contains("/board/detail")){
+            // /board/detail?id=3
+            // id에 해당하는 게시판 하나를 가져오면 된다
+            // 클라이언트의 요청이 서버로 들어올 때 HttpServletRequest -> request를 통해 들어온다
+//            request.getQueryString();
+//            out.println(request.getQueryString()); -> "id=3" 형식으로 가져오게 됨
+//            String queryString = request.getQueryString();
+            String id = request.getParameter("id"); //게시판 번호를 얻기엔 getParameter 편리
+            Board board = boardService.getBoard(Long.parseLong(id));
+            //board 데이터를 detail.jsp 에 전달하기 위해 어딘가에 담아줘야한다.
+            request.setAttribute("board", board);
+            view += "detail.jsp";
+        }
         else if (command.equals("/board/join")){
 
         }
@@ -63,6 +76,7 @@ public class BoardController extends HttpServlet {
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher(view);
         dispatcher.forward(request, response);
+
 
         //*뷰(페이지)를 응답하는 방법
         // 1. 리다이렉트

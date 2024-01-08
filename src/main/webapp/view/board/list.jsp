@@ -3,7 +3,7 @@
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
-        ArrayList<Board> boards = (ArrayList<Board>)request.getAttribute("boards");
+    ArrayList<Board> boards = (ArrayList<Board>) request.getAttribute("boards");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,7 +50,7 @@
         margin: 12px 0 12px 25px;
     }
 
-    .logo>img {
+    .logo > img {
         height: 36px;
     }
 
@@ -64,19 +64,19 @@
         text-decoration: none;
     }
 
-    .nav-items>li {
+    .nav-items > li {
         display: inline-block;
         /* 가로정렬 */
     }
 
-    .nav-items>li>a {
+    .nav-items > li > a {
         /* for Vertical Centering */
         line-height: 60px;
         padding: 0 30px;
         color: rgba(0, 0, 0, 0.4);
     }
 
-    .nav-items>li>a:hover {
+    .nav-items > li > a:hover {
         color: rgba(0, 0, 0, 0.8);
     }
 </style>
@@ -112,14 +112,20 @@
             </tr>
             </thead>
             <tbody class="table-group-divider">
-            <% for(Board board : boards){%>
+            <% for (Board board : boards) {%>
             <tr>
-                <th scope="row"><%=board.getId()%></th>
-                <td><%=board.getTitle()%></td>
-                <td><%=board.getWriter()%></td>
-                <td><%=board.getCreatedAt().format(DateTimeFormatter.ofPattern("MM-DD:HH"))%></td>
-                <td><%=board.getViewCount()%></td>
-                <td><%=board.getCommentCount()%></td>
+                <th scope="row"><%=board.getId()%>
+                </th>
+                <td><a href="/board/detail?id=<%=board.getId()%>"><%=board.getTitle()%>
+                </a></td>
+                <td><%=board.getWriter()%>
+                </td>
+                <td><%=board.getCreatedAt().format(DateTimeFormatter.ofPattern("MM-DD:HH"))%>
+                </td>
+                <td><%=board.getViewCount()%>
+                </td>
+                <td><%=board.getCommentCount()%>
+                </td>
             </tr>
             <%}%>
             </tbody>
@@ -156,6 +162,7 @@
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
 
 </html>
