@@ -1,13 +1,15 @@
 package com.kitri.myservletboard.service;
 
 import com.kitri.myservletboard.controller.dao.BoardDao;
+import com.kitri.myservletboard.controller.dao.BoardJdbcDao;
 import com.kitri.myservletboard.controller.dao.BoardMemoryDao;
 import com.kitri.myservletboard.controller.data.Board;
 
 import java.util.ArrayList;
 
 public class BoardService { //컨트롤러에게 서비스를 할당받을 예정
-    BoardDao boardDao = BoardMemoryDao.getInstance(); //싱글톤이기때문에 new가 아닌 getInstance()로
+    //BoardDao boardDao = BoardMemoryDao.getInstance(); //싱글톤이기때문에 new가 아닌 getInstance()로
+    BoardDao boardDao = BoardJdbcDao.getInstance();
 
     //싱글톤으로 생성
     private BoardService() {
