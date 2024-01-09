@@ -1,5 +1,5 @@
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="com.kitri.myservletboard.controller.data.Board" %>
+<%@ page import="com.kitri.myservletboard.data.Board" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%

@@ -1,7 +1,7 @@
 package com.kitri.myservletboard.controller;
 
-import com.kitri.myservletboard.controller.data.Board;
-import com.kitri.myservletboard.controller.service.BoardService;
+import com.kitri.myservletboard.data.Board;
+import com.kitri.myservletboard.service.BoardService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

@@ -1,6 +1,6 @@
-package com.kitri.myservletboard.controller.service;
+package com.kitri.myservletboard.service;
 
-import com.kitri.myservletboard.controller.data.Board;
+import com.kitri.myservletboard.data.Board;
 import com.kitri.myservletboard.dao.BoardDao;
 import com.kitri.myservletboard.dao.BoardMemoryDao;
 

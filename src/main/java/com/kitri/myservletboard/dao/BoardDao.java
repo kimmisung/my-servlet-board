@@ -1,6 +1,6 @@
 package com.kitri.myservletboard.dao;
 
-import com.kitri.myservletboard.controller.data.Board;
+import com.kitri.myservletboard.data.Board;
 
 import java.util.ArrayList;
 
