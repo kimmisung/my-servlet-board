@@ -1,5 +1,4 @@
 package com.kitri.myservletboard.controller.dao;
-
 import com.kitri.myservletboard.controller.data.Board;
 
 import java.util.ArrayList;
