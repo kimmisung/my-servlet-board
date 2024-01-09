@@ -1,5 +1,7 @@
 package com.kitri.myservletboard.controller.dao;
+
 import com.kitri.myservletboard.controller.data.Board;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -7,15 +9,18 @@ import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class BoardJdbcDao implements BoardDao {
 
+public class BoardJdbcDao implements BoardDao {
     private static final BoardJdbcDao instance = new BoardJdbcDao(); //싱글톤 생성
 
     public static BoardJdbcDao getInstance() {
         return instance;
     }
 
-    private BoardJdbcDao(){}; //생성자까지 추가해주어야 완벽한 싱글톤 작성
+    private BoardJdbcDao() {
+    }
+
+    ; //생성자까지 추가해주어야 완벽한 싱글톤 작성
 
 
     public Connection connectDB() {
@@ -51,7 +56,7 @@ public class BoardJdbcDao implements BoardDao {
             rs = ps.executeQuery(sql); //결과 값으로 ResultSet이 나옴 -> 때문에 선언한 rs로 받아줌
 
             //데이터를 가지고 오기 위해서는 메서드로 접근해야한다
-            while (rs.next()){
+            while (rs.next()) {
                 //id, 1번 row, 2번 로우....true이면 데이터를 읽을 수 있다
                 //데이터를 컬럼 단위로 읽는다
                 Long id = rs.getLong("id");
@@ -62,21 +67,19 @@ public class BoardJdbcDao implements BoardDao {
                 int viewCount = rs.getInt("view_Count");
                 int commentCount = rs.getInt("comment_count");
 
-
                 //DB에서 가져온 정보들로 Board board 객체 생성해주기
                 boards.add(new Board(id, title, content, writer, createdAt, viewCount, commentCount));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
 
-        }
-        finally {
+        } finally {
             //커넥션을 사용했으면 사용후 종료를 해주어야 한다.
             try {
                 rs.close();
                 ps.close();
                 connection.close();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -85,21 +88,122 @@ public class BoardJdbcDao implements BoardDao {
 
     @Override
     public Board getById(Long id) {
-        return null;
+
+        //connection
+        // ps -> executeQuery(); 이용해서 쿼리 날리기
+        // res -> 데이터 출력
+
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        Board board = null;
+
+        try {
+            connection = connectDB();
+            String sql = "SELECT * FROM board where id=?";
+            ps = connection.prepareStatement(sql);
+            ps.setLong(1, id);
+            rs = ps.executeQuery();
+
+
+            while (rs.next()) {
+                Long id_ = rs.getLong("id");
+                String title_ = rs.getString("title");
+                String content_ = rs.getString("content");
+                String writer_ = rs.getString("writer");
+                LocalDateTime createdAt_ = rs.getTimestamp("created_at").toLocalDateTime();
+                int viewCount_ = rs.getInt("view_Count");
+                int commentCount_ = rs.getInt("comment_count");
+
+                board = new Board(id_, title_, content_, writer_, createdAt_, viewCount_, commentCount_);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return board;
     }
 
     @Override
-    public void save(Board board) {
+    public void save(Board board) { //등록
+        //AI는 자동으로 증감시키는 것
 
+        Connection connection = null;
+        PreparedStatement ps = null;
+
+        try {
+            connection = connectDB();
+            String sql = "INSERT INTO board (title, content, writer) VALUES (?,?,?)";
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, board.getTitle());
+            ps.setString(2, board.getContent());
+            ps.setString(3, board.getWriter());
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            //커넥션을 사용했으면 사용후 종료를 해주어야 한다.
+            try {
+                ps.close();
+                connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
     public void update(Board board) {
 
+        Connection connection = null;
+        PreparedStatement ps = null;
+
+        try {
+            connection = connectDB();
+            String sql = "UPDATE board SET title = ?, content = ? where id = ?";
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, board.getTitle());
+            ps.setString(2, board.getContent());
+            ps.setLong(3, board.getId());
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            //커넥션을 사용했으면 사용후 종료를 해주어야 한다.
+            try {
+                ps.close();
+                connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
     public void delete(Board board) {
 
+        Connection connection = null;
+        PreparedStatement ps = null;
+
+        try {
+            connection = connectDB();
+            String sql = "DELETE FROM board WHERE id = ?";
+            ps = connection.prepareStatement(sql);
+            ps.setLong(1, board.getId());
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            //커넥션을 사용했으면 사용후 종료를 해주어야 한다.
+            try {
+                ps.close();
+                connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
