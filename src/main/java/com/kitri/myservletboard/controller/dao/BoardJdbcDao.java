@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 
@@ -33,8 +34,7 @@ public class BoardJdbcDao implements BoardDao {
             conn = DriverManager.getConnection(url, user, pwd);
 
             if (conn != null) {
-                System.out.println("성공");
-            }
+                System.out.println("성공");            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -195,6 +195,5 @@ public class BoardJdbcDao implements BoardDao {
                 e.printStackTrace();
             }
         }
-
     }
 }
