@@ -1,4 +1,4 @@
-package com.kitri.myservletboard.controller.data;
+package com.kitri.myservletboard.data;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -16,6 +16,7 @@ public class Board {
 
     public Board() {
     }
+
 
     public Long getId() {
         return id;

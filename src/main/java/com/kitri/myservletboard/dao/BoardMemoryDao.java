@@ -1,7 +1,7 @@
-package com.kitri.myservletboard.controller.dao;
+package com.kitri.myservletboard.dao;
 
-import com.kitri.myservletboard.controller.data.Board;
-import com.kitri.myservletboard.service.BoardService;
+import com.kitri.myservletboard.data.Board;
+import com.kitri.myservletboard.data.Pagination;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,6 +33,11 @@ public class BoardMemoryDao implements BoardDao { //implements한 인터페이�
 
     @Override
     public ArrayList<Board> getAll() {
+        return memoryBoardDB;
+    }
+
+    @Override
+    public ArrayList<Board> getAll(Pagination pagination) {
         return memoryBoardDB;
     }
 
@@ -78,4 +83,6 @@ public class BoardMemoryDao implements BoardDao { //implements한 인터페이�
         Board board_ = getById(board.getId());
         memoryBoardDB.remove(board_);
     }
+
 }
+
