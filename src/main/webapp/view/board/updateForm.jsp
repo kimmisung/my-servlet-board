@@ -10,7 +10,7 @@
 <div class="container">
     <div class="input-form-backgroud row">
         <div class="input-form col-md-12 mx-auto">
-            <h4 class="mb-3"><b>${}게시물 수정</b></h4>
+            <h4 class="mb-3"><b>${게시물 수정}</b></h4>
             <hr>
             <br>
             <form class="validation-form" novalidate action="/board/update" method="post">

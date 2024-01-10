@@ -1,6 +1,7 @@
 package com.kitri.myservletboard.controller.data;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Board {
     //게시판
@@ -48,8 +49,9 @@ public class Board {
         this.writer = writer;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public String getCreatedAt() {
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 hh:ss");
+        return createdAt.format(df);
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
