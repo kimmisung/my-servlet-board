@@ -39,7 +39,7 @@
                 </a></td>
                 <td><%=board.getWriter()%>
                 </td>
-                <td><%=board.getCreatedAt().format(DateTimeFormatter.ofPattern("MM-DD:HH"))%>
+                <td><%=board.getCreatedAt()%>
                 </td>
                 <td><%=board.getViewCount()%>
                 </td>
