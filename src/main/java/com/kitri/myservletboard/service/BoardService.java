@@ -1,9 +1,9 @@
 package com.kitri.myservletboard.service;
 
-import com.kitri.myservletboard.controller.dao.BoardDao;
-import com.kitri.myservletboard.controller.dao.BoardJdbcDao;
-import com.kitri.myservletboard.controller.dao.BoardMemoryDao;
-import com.kitri.myservletboard.controller.data.Board;
+import com.kitri.myservletboard.dao.BoardDao;
+import com.kitri.myservletboard.dao.BoardJdbcDao;
+import com.kitri.myservletboard.data.Board;
+import com.kitri.myservletboard.data.Pagination;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,8 @@ public class BoardService { //컨트롤러에게 서비스를 할당받을 예�
 
     //싱글톤으로 생성
     private BoardService() {
-    };
+    }
+
 
     private static final BoardService instance = new BoardService();
 
@@ -24,6 +25,14 @@ public class BoardService { //컨트롤러에게 서비스를 할당받을 예�
     //게시판 리스트 가져오는 로직
     public ArrayList<Board> getBoards() {
         return boardDao.getAll(); //역할 위임의 개념
+    }
+
+    public ArrayList<Board> getBoards(Pagination pagination) {
+
+        //total record ->
+        pagination.setTotalRecords(((BoardJdbcDao) boardDao).count());
+        pagination.calcPagination();
+        return boardDao.getAll(pagination);
     }
 
     public Board getBoard(Long id) {
@@ -41,4 +50,6 @@ public class BoardService { //컨트롤러에게 서비스를 할당받을 예�
     public void deleteBoard(Board board) {
         boardDao.delete(board);
     }
+
+
 }

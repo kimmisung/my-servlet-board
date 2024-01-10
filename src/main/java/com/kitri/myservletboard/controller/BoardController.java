@@ -1,6 +1,7 @@
 package com.kitri.myservletboard.controller;
 
-import com.kitri.myservletboard.controller.data.Board;
+import com.kitri.myservletboard.data.Board;
+import com.kitri.myservletboard.data.Pagination;
 import com.kitri.myservletboard.service.BoardService;
 
 import javax.servlet.RequestDispatcher;
@@ -40,12 +41,24 @@ public class BoardController extends HttpServlet {
         String view = "/view/board/";
 
         if (command.equals("/board/list")) {
-            ArrayList<Board> boards = boardService.getBoards(); //서비스를 통해 게시판 리스트를 가져옴
-            //가져온 리스트를 jsp한테 넘겨줘야함 -> jsp가 동적으로 만들어줌
-            request.setAttribute("boards", boards); //저장소 역할(key,value)형식
 
+            //페이지 정보를 넘겨주어야함 -> url : /board/list?page=3
+            String page = request.getParameter("page"); //페이지정보가 String이니까 형변환 필요
+            if (page == null){
+                page = "1";
+            }
+            Pagination pagination = new Pagination(Integer.parseInt(page));
+
+
+
+            ArrayList<Board> boards = boardService.getBoards(pagination); //서비스를 통해 게시판 리스트를 가져옴
+
+            //가져온 리스트를 jsp한테 넘겨줘야함 -> jsp가 동적으로 만들어줌
+            request.setAttribute("pagination", pagination); //페이지네이션 정보를 담아줄 예정
+            request.setAttribute("boards", boards); //저장소 역할(key,value)형식
             //request.getRequestDispatcher("/view/board/list.jsp");
             view += "list.jsp";
+
         } else if (command.equals("/board/createForm")) {
             view += "createForm.jsp";
 

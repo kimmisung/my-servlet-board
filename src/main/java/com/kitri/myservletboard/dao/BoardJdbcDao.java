@@ -1,6 +1,7 @@
-package com.kitri.myservletboard.controller.dao;
+package com.kitri.myservletboard.dao;
 
-import com.kitri.myservletboard.controller.data.Board;
+import com.kitri.myservletboard.data.Board;
+import com.kitri.myservletboard.data.Pagination;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -41,6 +42,8 @@ public class BoardJdbcDao implements BoardDao {
     }
 
     //BoardService 입장에서는 구현객체가 바껴도 상관없으나, 동일하게 맞춰서 메서드를 오버라이드해주면된다
+
+
     @Override
     public ArrayList<Board> getAll() {
         Connection connection = null; //커넥션 맺는 코드
@@ -85,6 +88,55 @@ public class BoardJdbcDao implements BoardDao {
         }
         return boards;
     }
+
+    @Override
+    public ArrayList<Board> getAll(Pagination pagination) {
+        Connection connection = null; //커넥션 맺는 코드
+        PreparedStatement ps = null; //쿼리 날리는 코드
+        ResultSet rs = null; //결과 출력 받는 코드
+
+        ArrayList<Board> boards = new ArrayList<>();
+
+        try {
+            connection = connectDB();
+            String sql = "SELECT * FROM board LIMIT ?, ?"; //LIMIT 10(startIndex), 10(MaxRecordsPerPage); -> 11번째부터 10개가 추출
+            ps = connection.prepareStatement(sql); //ps를 반환해줌
+            ps.setInt(1, (pagination.getPage() - 1) * pagination.getMaxPagesOnScreen()); //1page : 0, 2page : 10, 3page : 20
+            ps.setInt(2, pagination.getMaxRecordsPerPage());
+            rs = ps.executeQuery(); //결과 값으로 ResultSet이 나옴 -> 때문에 선언한 rs로 받아줌
+
+
+            //데이터를 가지고 오기 위해서는 메서드로 접근해야한다
+            while (rs.next()) {
+                //id, 1번 row, 2번 로우....true이면 데이터를 읽을 수 있다
+                //데이터를 컬럼 단위로 읽는다
+                Long id = rs.getLong("id");
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                String writer = rs.getString("writer");
+                LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
+                int viewCount = rs.getInt("view_Count");
+                int commentCount = rs.getInt("comment_count");
+
+                //DB에서 가져온 정보들로 Board board 객체 생성해주기
+                boards.add(new Board(id, title, content, writer, createdAt, viewCount, commentCount));
+            }
+        } catch (Exception e) {
+
+
+        } finally {
+            //커넥션을 사용했으면 사용후 종료를 해주어야 한다.
+            try {
+                rs.close();
+                ps.close();
+                connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return boards;
+    }
+
 
     @Override
     public Board getById(Long id) {
@@ -205,5 +257,38 @@ public class BoardJdbcDao implements BoardDao {
                 e.printStackTrace();
             }
         }
+    }
+
+    public int count() {
+        Connection connection = null; //커넥션 맺는 코드
+        PreparedStatement ps = null; //쿼리 날리는 코드
+        ResultSet rs = null; //결과 출력 받는 코드
+
+        int count = 0;
+
+        try {
+            connection = connectDB();
+            String sql = "SELECT count(*) FROM board";
+            ps = connection.prepareStatement(sql);
+            rs = ps.executeQuery();
+            rs.next();
+
+            count = rs.getInt("count(*)");
+
+
+        } catch (Exception e) {
+
+
+        } finally {
+            //커넥션을 사용했으면 사용후 종료를 해주어야 한다.
+            try {
+                rs.close();
+                ps.close();
+                connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return count;
     }
 }
