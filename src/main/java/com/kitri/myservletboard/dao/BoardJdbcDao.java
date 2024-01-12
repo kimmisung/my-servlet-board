@@ -184,6 +184,59 @@ public class BoardJdbcDao implements BoardDao {
         return boards;
     }
 
+    @Override
+    public ArrayList<Board> getAll(String type, String keyword, String period, Pagination pagination) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        ArrayList<Board> boards = new ArrayList<>();
+        if (type == null){
+            type = "title";
+        }
+        if (keyword == null){
+            keyword = "";
+        }
+        if (period == null){
+            period = "100 year"; //전체기간이 조회되게 설정
+        }
+
+        try {
+            connection = connectDB();
+            String sql = "SELECT * FROM board WHERE " + type + " LIKE " + "'%" + keyword
+                    + "%' AND" + " created_at BETWEEN DATE_ADD(NOW(), INTERVAL -" + period + ") AND NOW() LIMIT ?, ?";
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, (pagination.getPage() - 1) * pagination.getMaxRecordsPerPage()); //1page : 0, 2page : 10, 3page : 20
+            ps.setInt(2, pagination.getMaxRecordsPerPage());
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                String writer = rs.getString("writer");
+                LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
+                int viewCount = rs.getInt("view_count");
+                int commentCount = rs.getInt("comment_count");
+
+                //DB에서 가져온 정보들로 Board board 객체 생성해주기
+                boards.add(new Board(id, title, content, writer, createdAt, viewCount, commentCount));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                ps.close();
+                connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return boards;
+    }
+
 
     @Override
     public Board getById(Long id) {
@@ -353,6 +406,44 @@ public class BoardJdbcDao implements BoardDao {
         try {
             connection = connectDB();
             String sql = "SELECT count(*) FROM board WHERE " + type + " LIKE " + "'%" + keyword + "%'";
+            ps = connection.createStatement();
+            rs = ps.executeQuery(sql);
+            rs.next();
+
+            count = rs.getInt("count(*)");
+
+        } catch (Exception e) {
+
+
+        } finally {
+            //커넥션을 사용했으면 사용후 종료를 해주어야 한다.
+            try {
+                rs.close();
+                ps.close();
+                connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return count;
+    }
+
+    public int count(String type, String keyword, String period) {
+
+        if (keyword == null || period == null){
+            return count();
+        }
+
+        Connection connection = null; //커넥션 맺는 코드
+        Statement ps = null; //쿼리 날리는 코드
+        ResultSet rs = null; //결과 출력 받는 코드
+
+        int count = 0;
+
+        try {
+            connection = connectDB();
+            String sql = "SELECT count(*) FROM board WHERE " + type + " LIKE " + "'%" + keyword
+                    + "%' AND" + " created_at BETWEEN DATE_ADD(NOW(), INTERVAL -" + period + ") AND NOW()";
             ps = connection.createStatement();
             rs = ps.executeQuery(sql);
             rs.next();

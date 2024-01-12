@@ -50,14 +50,18 @@ public class BoardController extends HttpServlet {
 
             String type = request.getParameter("type");
             String keyword = request.getParameter("keyword");
+            String period = request.getParameter("period");
+
+
             ArrayList<Board> boards
-                    = boardService.getBoards(type, keyword, pagination);
+                    = boardService.getBoards(type, keyword, period, pagination);
 
             request.setAttribute("pagination", pagination); //페이지네이션 정보를 담아줄 예정
             //가져온 리스트를 jsp한테 넘겨줘야함 -> jsp가 동적으로 만들어줌
 
             request.setAttribute("type", type);
             request.setAttribute("keyword", keyword);
+            request.setAttribute("period", period);
             request.setAttribute("boards", boards); //저장소 역할(key,value)형식
             //request.getRequestDispatcher("/view/board/list.jsp");
             view += "list.jsp";

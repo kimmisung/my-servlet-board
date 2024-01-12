@@ -40,6 +40,12 @@ public class BoardService { //컨트롤러에게 서비스를 할당받을 예�
         return boardDao.getAll(type, keyword, pagination);
     }
 
+    public ArrayList<Board> getBoards(String type, String keyword, String period, Pagination pagination){
+        pagination.setTotalRecords(((BoardJdbcDao) boardDao).count(type, keyword, period));
+        pagination.calcPagination();
+        return boardDao.getAll(type, keyword, period, pagination);
+    }
+
     public Board getBoard(Long id) {
         return boardDao.getById(id);
     }
