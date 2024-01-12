@@ -39,7 +39,6 @@ public class BoardController extends HttpServlet {
         //out.println("command = " + command);
 
         String view = "/view/board/";
-
         if (command.equals("/board/list")) {
 
             //페이지 정보를 넘겨주어야함 -> url : /board/list?page=3
@@ -49,17 +48,22 @@ public class BoardController extends HttpServlet {
             }
             Pagination pagination = new Pagination(Integer.parseInt(page));
 
+            String type = request.getParameter("type");
+            String keyword = request.getParameter("keyword");
+            ArrayList<Board> boards
+                    = boardService.getBoards(type, keyword, pagination);
 
-
-            ArrayList<Board> boards = boardService.getBoards(pagination); //서비스를 통해 게시판 리스트를 가져옴
-
-            //가져온 리스트를 jsp한테 넘겨줘야함 -> jsp가 동적으로 만들어줌
             request.setAttribute("pagination", pagination); //페이지네이션 정보를 담아줄 예정
+            //가져온 리스트를 jsp한테 넘겨줘야함 -> jsp가 동적으로 만들어줌
+
+            request.setAttribute("type", type);
+            request.setAttribute("keyword", keyword);
             request.setAttribute("boards", boards); //저장소 역할(key,value)형식
             //request.getRequestDispatcher("/view/board/list.jsp");
             view += "list.jsp";
 
-        } else if (command.equals("/board/createForm")) {
+
+        }   else if (command.equals("/board/createForm")) {
             view += "createForm.jsp";
 
         } else if (command.contains("/board/updateForm")) {
@@ -85,6 +89,10 @@ public class BoardController extends HttpServlet {
 //          리다이렉트로 리스트로 보내주기
             response.sendRedirect("/board/list");
             return;
+
+
+
+
 
         } else if (command.equals("/board/create")) {
             //데이터를 읽고

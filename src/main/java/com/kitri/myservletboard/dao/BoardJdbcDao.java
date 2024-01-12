@@ -3,10 +3,7 @@ package com.kitri.myservletboard.dao;
 import com.kitri.myservletboard.data.Board;
 import com.kitri.myservletboard.data.Pagination;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -67,7 +64,7 @@ public class BoardJdbcDao implements BoardDao {
                 String content = rs.getString("content");
                 String writer = rs.getString("writer");
                 LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
-                int viewCount = rs.getInt("view_Count");
+                int viewCount = rs.getInt("view_count");
                 int commentCount = rs.getInt("comment_count");
 
                 //DB에서 가져온 정보들로 Board board 객체 생성해주기
@@ -115,7 +112,7 @@ public class BoardJdbcDao implements BoardDao {
                 String content = rs.getString("content");
                 String writer = rs.getString("writer");
                 LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
-                int viewCount = rs.getInt("view_Count");
+                int viewCount = rs.getInt("view_count");
                 int commentCount = rs.getInt("comment_count");
 
                 //DB에서 가져온 정보들로 Board board 객체 생성해주기
@@ -126,6 +123,56 @@ public class BoardJdbcDao implements BoardDao {
 
         } finally {
             //커넥션을 사용했으면 사용후 종료를 해주어야 한다.
+            try {
+                rs.close();
+                ps.close();
+                connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return boards;
+    }
+
+    @Override
+    public ArrayList<Board> getAll(String type, String keyword, Pagination pagination) {
+
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        ArrayList<Board> boards = new ArrayList<>();
+        if (type == null){
+            type = "title";
+        }
+        if (keyword == null){
+            keyword = "";
+        }
+
+        try {
+            connection = connectDB();
+            String sql = "SELECT * FROM board WHERE " + type + " LIKE " + "'%" + keyword + "%'" + " LIMIT ?, ?";
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, (pagination.getPage() - 1) * pagination.getMaxPagesOnScreen()); //1page : 0, 2page : 10, 3page : 20
+            ps.setInt(2, pagination.getMaxRecordsPerPage());
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                String writer = rs.getString("writer");
+                LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
+                int viewCount = rs.getInt("view_count");
+                int commentCount = rs.getInt("comment_count");
+
+                //DB에서 가져온 정보들로 Board board 객체 생성해주기
+                boards.add(new Board(id, title, content, writer, createdAt, viewCount, commentCount));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
             try {
                 rs.close();
                 ps.close();
@@ -275,6 +322,42 @@ public class BoardJdbcDao implements BoardDao {
 
             count = rs.getInt("count(*)");
 
+
+        } catch (Exception e) {
+
+
+        } finally {
+            //커넥션을 사용했으면 사용후 종료를 해주어야 한다.
+            try {
+                rs.close();
+                ps.close();
+                connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return count;
+    }
+
+    public int count(String type, String keyword) {
+
+        if (keyword == null){
+            return count();
+        }
+        Connection connection = null; //커넥션 맺는 코드
+        Statement ps = null; //쿼리 날리는 코드
+        ResultSet rs = null; //결과 출력 받는 코드
+
+        int count = 0;
+
+        try {
+            connection = connectDB();
+            String sql = "SELECT count(*) FROM board WHERE " + type + " LIKE " + "'%" + keyword + "%'";
+            ps = connection.createStatement();
+            rs = ps.executeQuery(sql);
+            rs.next();
+
+            count = rs.getInt("count(*)");
 
         } catch (Exception e) {
 

@@ -14,6 +14,8 @@ public interface BoardDao {
 
     public ArrayList<Board> getAll();
     public ArrayList<Board> getAll(Pagination pagination); //추가
+    public ArrayList<Board> getAll(String type, String keyword, Pagination pagination);
+
     public Board getById(Long id);
     public void save(Board board);
     public void update(Board board);

@@ -1,10 +1,21 @@
 <%@ page import="com.kitri.myservletboard.data.Board" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="com.kitri.myservletboard.data.Pagination" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
     ArrayList<Board> boards = (ArrayList<Board>) request.getAttribute("boards");
+
+    Pagination pagination = (Pagination) request.getAttribute("pagination");
+    String type = (String) request.getAttribute("type");
+    String keyword = (String) request.getAttribute("keyword");
+
+    String param = "";
+    if (keyword != null){
+        param += "&type=" + type + "&keyword=" + keyword;
+    }else {
+        keyword = "";
+    }
+
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +24,11 @@
 </jsp:include>
 
 <body>
-<jsp:include page="/view/common/header.jsp"/>
+<jsp:include page="/view/common/header.jsp">
+    <jsp:param name="type" value="<%=type%>"/>
+    <jsp:param name="keyword" value="<%=keyword%>"/>
+</jsp:include>
+
 
 <div>
     <h2 style="text-align: center; margin-top: 100px;"><b>게시판 목록</b></h2>
@@ -58,15 +73,14 @@
                 <ul class="pagination pagination-sm">
 
                     <%
-                        Pagination pagination = (Pagination) request.getAttribute("pagination");
                         if (pagination.isHasPrev()){
                     %>
                     <li class="page-item">
-                        <a class="page-link" href="/board/list?page=<%=pagination.getStartPageOnScreen() - 1%>" tabindex="-1" aria-disabled="true">Previous</a>
+                        <a class="page-link" href="/board/list?page=<%=pagination.getStartPageOnScreen() - 1%><%=param%>" tabindex="-1" aria-disabled="true">Previous</a>
                     </li>
                     <%} else {%>
                     <li class="page-item disabled">
-                        <a class="page-link" href="/board/list?page=<%=pagination.getStartPageOnScreen() - 1%>" tabindex="-1" aria-disabled="true">Previous</a>
+                        <a class="page-link" href="/board/list?page=<%=pagination.getStartPageOnScreen() - 1%><%=param%>" tabindex="-1" aria-disabled="true">Previous</a>
                     </li>
                     <%}%>
 
@@ -74,9 +88,9 @@
                         for(int i = pagination.getStartPageOnScreen(); i <= pagination.getEndPageOnScreen(); i++) {
                             if (pagination.getPage() == i) {
                     %>
-                    <li class="page-item"><a class="page-link active" href="/board/list?page=<%=i%>"><%=i%></a></li>
+                    <li class="page-item"><a class="page-link active" href="/board/list?page=<%=i%><%=param%>"><%=i%></a></li>
                     <%} else {%>
-                    <li class="page-item"><a class="page-link" href="/board/list?page=<%=i%>"><%=i%></a></li>
+                    <li class="page-item"><a class="page-link" href="/board/list?page=<%=i%><%=param%>"><%=i%></a></li>
                     <%}}%>
 
 
@@ -85,11 +99,11 @@
                         if (pagination.isHasNext()){
                     %>
                     <li class="page-item">
-                        <a class="page-link" href="/board/list?page=<%=pagination.getEndPageOnScreen() + 1%>">Next</a>
+                        <a class="page-link" href="/board/list?page=<%=pagination.getEndPageOnScreen() + 1%><%=param%>">Next</a>
                     </li>
                     <%} else {%>
                     <li class="page-item disabled">
-                        <a class="page-link" href="/board/list?page=<%=pagination.getEndPageOnScreen() - 1%>">Next</a>
+                        <a class="page-link" href="/board/list?page=<%=pagination.getEndPageOnScreen() + 1%><%=param%>">Next</a>
                     </li>
                     <%}%>
 
