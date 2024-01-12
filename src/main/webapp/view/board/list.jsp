@@ -8,10 +8,11 @@
     Pagination pagination = (Pagination) request.getAttribute("pagination");
     String type = (String) request.getAttribute("type");
     String keyword = (String) request.getAttribute("keyword");
+    String period = (String) request.getAttribute("period");
 
     String param = "";
     if (keyword != null){
-        param += "&type=" + type + "&keyword=" + keyword;
+        param += "&type=" + type + "&keyword=" + keyword + "&period=" + period;
     }else {
         keyword = "";
     }
@@ -27,6 +28,7 @@
 <jsp:include page="/view/common/header.jsp">
     <jsp:param name="type" value="<%=type%>"/>
     <jsp:param name="keyword" value="<%=keyword%>"/>
+    <jsp:param name="period" value="<%=period%>"/>
 </jsp:include>
 
 

@@ -18,27 +18,6 @@ public class Pagination {
     private int endPageOnScreen = this.maxPagesOnScreen;
 
 
-    public void calcSearchPage() {
-
-        int totalSearchPages = ((int) (Math.ceil((double) this.totalSearchRecords / this.maxRecordsPerPage)));
-        this.startPageOnScreen
-                = ((int) (Math.ceil((double) this.page / maxPagesOnScreen)) - 1) * this.maxPagesOnScreen + 1;
-
-        //1,5
-        this.endPageOnScreen = this.startPageOnScreen + this.maxPagesOnScreen - 1;
-        // totalPages에 따라 달라짐
-        if (this.endPageOnScreen > totalSearchPages) {
-            this.endPageOnScreen = totalSearchPages;
-        }
-
-        if (this.endPageOnScreen < totalSearchPages) {
-            this.hasNext = true; //활성화
-        }
-        //previous페이지가 있는지
-        if (this.startPageOnScreen > this.maxPagesOnScreen) {
-            this.hasPrev = true; //활성화
-        }
-    }
 
     public void calcPagination(){
         //페이지네이션 정보 계산 메세지

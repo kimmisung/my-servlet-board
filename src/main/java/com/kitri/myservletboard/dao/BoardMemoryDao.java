@@ -46,6 +46,11 @@ public class BoardMemoryDao implements BoardDao { //implements한 인터페이�
         return null;
     }
 
+    @Override
+    public ArrayList<Board> getAll(String type, String keyword, String period, Pagination pagination) {
+        return null;
+    }
+
 
     @Override
     public Board getById(Long id) {
