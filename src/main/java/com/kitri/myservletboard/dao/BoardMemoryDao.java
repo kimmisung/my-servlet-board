@@ -42,6 +42,12 @@ public class BoardMemoryDao implements BoardDao { //implements한 인터페이�
     }
 
     @Override
+    public ArrayList<Board> getAll(String type, String keyword, Pagination pagination) {
+        return null;
+    }
+
+
+    @Override
     public Board getById(Long id) {
         return memoryBoardDB.stream().filter(board -> {
             return board.getId() == id;

@@ -9,11 +9,36 @@ public class Pagination {
     private int startIndex = 0; //DB 게시글이 몇 번째부터 시작하는지
     private int totalRecords = 0; //총 저장된 레코드 수
 
+    private int totalSearchRecords = 0; //검색된 레코드 수
+
 
     private boolean hasNext = false;  //페이지네이션의 next 여부 : true면 활성화
     private boolean hasPrev = false; //페이지네이션의 previous 여부 : true면 활성화
     private int startPageOnScreen = 1;
     private int endPageOnScreen = this.maxPagesOnScreen;
+
+
+    public void calcSearchPage() {
+
+        int totalSearchPages = ((int) (Math.ceil((double) this.totalSearchRecords / this.maxRecordsPerPage)));
+        this.startPageOnScreen
+                = ((int) (Math.ceil((double) this.page / maxPagesOnScreen)) - 1) * this.maxPagesOnScreen + 1;
+
+        //1,5
+        this.endPageOnScreen = this.startPageOnScreen + this.maxPagesOnScreen - 1;
+        // totalPages에 따라 달라짐
+        if (this.endPageOnScreen > totalSearchPages) {
+            this.endPageOnScreen = totalSearchPages;
+        }
+
+        if (this.endPageOnScreen < totalSearchPages) {
+            this.hasNext = true; //활성화
+        }
+        //previous페이지가 있는지
+        if (this.startPageOnScreen > this.maxPagesOnScreen) {
+            this.hasPrev = true; //활성화
+        }
+    }
 
     public void calcPagination(){
         //페이지네이션 정보 계산 메세지
@@ -25,34 +50,34 @@ public class Pagination {
         //6~10페이지를 /5 했을 때 ->  1~2 올림 시 2,
         //11~15페이지를 /5 했을 때 -> 2~3 올림 시 3
         //ceil을 줄 때, 연산 과정에 double을 명시해주어야 한다
-
-        int totalPages = ((int)(Math.ceil((double) this.totalRecords / this.maxRecordsPerPage)));
+        int totalPages = ((int) (Math.ceil((double) this.totalRecords / this.maxRecordsPerPage)));
 
         this.startPageOnScreen
-                = ((int)(Math.ceil((double) this.page / maxPagesOnScreen)) - 1 ) * this.maxPagesOnScreen + 1;
+                = ((int) (Math.ceil((double) this.page / maxPagesOnScreen)) - 1) * this.maxPagesOnScreen + 1;
 
         //1,5
         this.endPageOnScreen = this.startPageOnScreen + this.maxPagesOnScreen - 1;
-                // totalPages에 따라 달라짐
-        if (this.endPageOnScreen > totalPages){
-           this.endPageOnScreen = totalPages;
+        // totalPages에 따라 달라짐
+        if (this.endPageOnScreen > totalPages) {
+            this.endPageOnScreen = totalPages;
         }
         System.out.println(this.startPageOnScreen);
         System.out.println(this.endPageOnScreen);
 
         //next페이지가 있는지 여부
-        if (this.endPageOnScreen < totalPages){
+        if (this.endPageOnScreen < totalPages) {
             this.hasNext = true; //활성화
         }
         //previous페이지가 있는지
-        if (this.startPageOnScreen > this.maxPagesOnScreen){
+        if (this.startPageOnScreen > this.maxPagesOnScreen) {
             this.hasPrev = true; //활성화
         }
-        //default 값이 false이기 때문에 else값은 따로 안주어도 됨
+//        default 값이 false이기 때문에 else값은 따로 안주어도 됨
     }
 
     public Pagination() {
     }
+
 
     public Pagination(int page) {
         this.page = page;
@@ -126,7 +151,17 @@ public class Pagination {
         return endPageOnScreen;
     }
 
+
     public void setEndPageOnScreen(int endPageOnScreen) {
         this.endPageOnScreen = endPageOnScreen;
     }
+
+    public int getTotalSearchRecords() {
+        return totalSearchRecords;
+    }
+
+    public void setTotalSearchRecords(int totalSearchRecords) {
+        this.totalSearchRecords = totalSearchRecords;
+    }
 }
+
