@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 
 public class BoardJdbcDao implements BoardDao {
+
+
     private static final BoardJdbcDao instance = new BoardJdbcDao(); //싱글톤 생성
 
     public static BoardJdbcDao getInstance() {
@@ -40,6 +42,66 @@ public class BoardJdbcDao implements BoardDao {
 
     //BoardService 입장에서는 구현객체가 바껴도 상관없으나, 동일하게 맞춰서 메서드를 오버라이드해주면된다
 
+
+    @Override
+    public ArrayList<Board> getAll(String type, String keyword, String period, String orderBy, Pagination pagination) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        ArrayList<Board> boards = new ArrayList<>();
+        if (type == null) {
+            type = "title";
+        }
+        if (keyword == null) {
+            keyword = "";
+        }
+        if (period == null) {
+            period = "100 year"; //전체기간이 조회되게 설정
+        }
+
+
+        if (orderBy.equals("latest")) {
+            orderBy = "created_at";
+        } else if (orderBy.equals("views")) {
+            orderBy = "view_count";
+        }
+
+        try {
+            connection = connectDB();
+            String sql = "SELECT * FROM board WHERE " + type + " LIKE " + "'%" + keyword
+                    + "%' AND" + " created_at BETWEEN DATE_ADD(NOW(), INTERVAL -" + period + ") AND NOW() ORDER BY " + orderBy + " DESC LIMIT ?, ?";
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, (pagination.getPage() - 1) * pagination.getMaxRecordsPerPage()); //1page : 0, 2page : 10, 3page : 20
+            ps.setInt(2, pagination.getMaxRecordsPerPage());
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                String writer = rs.getString("writer");
+                LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
+                int viewCount = rs.getInt("view_count");
+                int commentCount = rs.getInt("comment_count");
+
+                //DB에서 가져온 정보들로 Board board 객체 생성해주기
+                boards.add(new Board(id, title, content, writer, createdAt, viewCount, commentCount));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+                ps.close();
+                connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return boards;
+    }
 
     @Override
     public ArrayList<Board> getAll() {
@@ -142,10 +204,10 @@ public class BoardJdbcDao implements BoardDao {
         ResultSet rs = null;
 
         ArrayList<Board> boards = new ArrayList<>();
-        if (type == null){
+        if (type == null) {
             type = "title";
         }
-        if (keyword == null){
+        if (keyword == null) {
             keyword = "";
         }
 
@@ -191,13 +253,13 @@ public class BoardJdbcDao implements BoardDao {
         ResultSet rs = null;
 
         ArrayList<Board> boards = new ArrayList<>();
-        if (type == null){
+        if (type == null) {
             type = "title";
         }
-        if (keyword == null){
+        if (keyword == null) {
             keyword = "";
         }
-        if (period == null){
+        if (period == null) {
             period = "100 year"; //전체기간이 조회되게 설정
         }
 
@@ -394,7 +456,7 @@ public class BoardJdbcDao implements BoardDao {
 
     public int count(String type, String keyword) {
 
-        if (keyword == null){
+        if (keyword == null) {
             return count();
         }
         Connection connection = null; //커넥션 맺는 코드
@@ -430,7 +492,7 @@ public class BoardJdbcDao implements BoardDao {
 
     public int count(String type, String keyword, String period) {
 
-        if (keyword == null || period == null){
+        if (keyword == null || period == null) {
             return count();
         }
 

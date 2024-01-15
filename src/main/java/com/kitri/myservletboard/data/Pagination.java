@@ -18,6 +18,10 @@ public class Pagination {
     private int endPageOnScreen = this.maxPagesOnScreen;
 
 
+    public Pagination(int page, int maxRecordsPerPage) {
+        this.page = page;
+        this.maxRecordsPerPage = maxRecordsPerPage;
+    }
 
     public void calcPagination(){
         //페이지네이션 정보 계산 메세지

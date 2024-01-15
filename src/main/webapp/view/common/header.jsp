@@ -14,6 +14,10 @@
             <li><a href="/view/member/login.jsp">로그인</a></li>
             <nav class="navbar navbar-light">
                 <form class="d-flex" action="/board/list">
+
+                    <input name="orderBy" value="${param.orderBy}" hidden="hidden"/>
+                    <input name="maxRecordsPerPage" value="${param.maxRecordsPerPage}" hidden="hidden"/>
+
                         <select name="period">
                             <option value="100 Year" ${param.period == "100 Year" ? "selected" : ""}>전체기간</option>
                             <option value="1 Day" ${param.period == "1 Day" ? "selected" : ""}>1일 전</option>

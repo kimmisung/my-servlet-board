@@ -43,18 +43,34 @@ public class BoardController extends HttpServlet {
 
             //페이지 정보를 넘겨주어야함 -> url : /board/list?page=3
             String page = request.getParameter("page"); //페이지정보가 String이니까 형변환 필요
-            if (page == null){
+            if (page == null || page == ""){
                 page = "1";
             }
-            Pagination pagination = new Pagination(Integer.parseInt(page));
-
             String type = request.getParameter("type");
+            if (type == null || type == ""){
+                type = "title";
+            }
             String keyword = request.getParameter("keyword");
+            if (keyword == null || keyword == "") {
+                keyword = "";
+            }
             String period = request.getParameter("period");
+            if (period == null || period == "") {
+                period = "100 year";
+            }
+            String orderBy = request.getParameter("orderBy");
+            if (orderBy == null){
+                orderBy = "created_at";
+            }
+            String maxRecordsPerPage = request.getParameter("maxRecordsPerPage");
+            if (maxRecordsPerPage == null){
+                maxRecordsPerPage = "10";
+            }
 
+            Pagination pagination = new Pagination(Integer.parseInt(page), Integer.parseInt(maxRecordsPerPage));
 
             ArrayList<Board> boards
-                    = boardService.getBoards(type, keyword, period, pagination);
+                    = boardService.getBoards(type, keyword, period, orderBy, pagination);
 
             request.setAttribute("pagination", pagination); //페이지네이션 정보를 담아줄 예정
             //가져온 리스트를 jsp한테 넘겨줘야함 -> jsp가 동적으로 만들어줌
@@ -62,6 +78,8 @@ public class BoardController extends HttpServlet {
             request.setAttribute("type", type);
             request.setAttribute("keyword", keyword);
             request.setAttribute("period", period);
+            request.setAttribute("orderBy", orderBy);
+            request.setAttribute("maxRecordsPerPage", maxRecordsPerPage);
             request.setAttribute("boards", boards); //저장소 역할(key,value)형식
             //request.getRequestDispatcher("/view/board/list.jsp");
             view += "list.jsp";
