@@ -12,9 +12,9 @@
     String orderBy = (String) request.getAttribute("orderBy");
     String maxRecordsPerPage = (String) request.getAttribute("maxRecordsPerPage");
 
-    String param = "&orderBy=" + orderBy + "&maxRecordsPerPage=" + maxRecordsPerPage;
+    String params = "&orderBy=" + orderBy + "&maxRecordsPerPage=" + maxRecordsPerPage;
     if (keyword != null) {
-        param += "&type=" + type + "&keyword=" + keyword + "&period=" + period;
+        params += "&type=" + type + "&keyword=" + keyword + "&period=" + period;
     } else {
         keyword = "";
     }
@@ -105,13 +105,13 @@
                     %>
                     <li class="page-item">
                         <a class="page-link"
-                           href="/board/list?page=<%=pagination.getStartPageOnScreen() - 1%><%=param%>" tabindex="-1"
+                           href="/board/list?page=<%=pagination.getStartPageOnScreen() - 1%><%=params%>" tabindex="-1"
                            aria-disabled="true">Previous</a>
                     </li>
                     <%} else {%>
                     <li class="page-item disabled">
                         <a class="page-link"
-                           href="/board/list?page=<%=pagination.getStartPageOnScreen() - 1%><%=param%>" tabindex="-1"
+                           href="/board/list?page=<%=pagination.getStartPageOnScreen() - 1%><%=params%>" tabindex="-1"
                            aria-disabled="true">Previous</a>
                     </li>
                     <%}%>
@@ -120,10 +120,10 @@
                         for (int i = pagination.getStartPageOnScreen(); i <= pagination.getEndPageOnScreen(); i++) {
                             if (pagination.getPage() == i) {
                     %>
-                    <li class="page-item"><a class="page-link active" href="/board/list?page=<%=i%><%=param%>"><%=i%>
+                    <li class="page-item"><a class="page-link active" href="/board/list?page=<%=i%><%=params%>"><%=i%>
                     </a></li>
                     <%} else {%>
-                    <li class="page-item"><a class="page-link" href="/board/list?page=<%=i%><%=param%>"><%=i%>
+                    <li class="page-item"><a class="page-link" href="/board/list?page=<%=i%><%=params%>"><%=i%>
                     </a></li>
                     <%
                             }
@@ -135,11 +135,11 @@
                         if (pagination.isHasNext()) {
                     %>
                     <li class="page-item">
-                        <a class="page-link" href="/board/list?page=<%=pagination.getEndPageOnScreen() + 1%><%=param%>">Next</a>
+                        <a class="page-link" href="/board/list?page=<%=pagination.getEndPageOnScreen() + 1%><%=params%>">Next</a>
                     </li>
                     <%} else {%>
                     <li class="page-item disabled">
-                        <a class="page-link" href="/board/list?page=<%=pagination.getEndPageOnScreen() + 1%><%=param%>">Next</a>
+                        <a class="page-link" href="/board/list?page=<%=pagination.getEndPageOnScreen() + 1%><%=params%>">Next</a>
                     </li>
                     <%}%>
 
