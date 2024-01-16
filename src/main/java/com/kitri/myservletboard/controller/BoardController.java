@@ -29,7 +29,6 @@ public class BoardController extends HttpServlet {
         // HTML이 UTF-8 형식이라는 것을 브라우저에게 전달
         response.setContentType("text/html; charset=UTF-8");
         PrintWriter out = response.getWriter();
-
         out.println("<h1>요청을 잘 응답받았습니다!</h1>");
 
         //URL을 파싱해서 어떤 요청인지 파악 -> request
@@ -113,9 +112,6 @@ public class BoardController extends HttpServlet {
             return;
 
 
-
-
-
         } else if (command.equals("/board/create")) {
             //데이터를 읽고
             //등록시키면 된다
@@ -155,12 +151,6 @@ public class BoardController extends HttpServlet {
             //board 데이터를 detail.jsp 에 전달하기 위해 어딘가에 담아줘야한다.
             request.setAttribute("board", board);
             view += "detail.jsp";
-        } else if (command.equals("/board/join")) {
-
-        } else if (command.equals("/board/login")) {
-
-        } else if (command.equals("/board/registration")) {
-
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher(view);
         dispatcher.forward(request, response);

@@ -93,9 +93,16 @@
             <%}%>
             </tbody>
         </table>
+
+        <%
+            String id = (String) session.getAttribute("id");
+            if (id != null)
+
+            {%>
         <div>
             <a href="/board/createForm" role="button" class="btn btn-outline-dark">글쓰기</a>
         </div>
+        <%}%>
         <div class="d-flex justify-content-center">
             <nav aria-label="Page navigation example">
                 <ul class="pagination pagination-sm">
