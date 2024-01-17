@@ -1,6 +1,7 @@
 <%@ page import="com.kitri.myservletboard.data.Board" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.kitri.myservletboard.data.Pagination" %>
+<%@ page import="com.kitri.myservletboard.data.Member" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
     ArrayList<Board> boards = (ArrayList<Board>) request.getAttribute("boards");
@@ -93,16 +94,16 @@
             <%}%>
             </tbody>
         </table>
-
+        <%--로그인 여부는 세션으로 받아와야함--%>
         <%
-            String id = (String) session.getAttribute("id");
-            if (id != null)
-
-            {%>
+            Member member = (Member) session.getAttribute("member");
+            if (member != null){
+                if (member.getLogin_id() != null) {
+        %>
         <div>
             <a href="/board/createForm" role="button" class="btn btn-outline-dark">글쓰기</a>
         </div>
-        <%}%>
+        <%}}%>
         <div class="d-flex justify-content-center">
             <nav aria-label="Page navigation example">
                 <ul class="pagination pagination-sm">
@@ -155,7 +156,6 @@
             </nav>
         </div>
     </div>
-</div>
 </div>
 <div class="p-2">
     <div class="container d-flex justify-content-center">

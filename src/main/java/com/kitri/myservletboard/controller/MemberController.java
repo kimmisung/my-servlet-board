@@ -35,8 +35,7 @@ public class MemberController extends HttpServlet {
         if (command.equals("/member/loginForm")) {
             //로그인 폼
             view += "login.jsp";
-        }
-        if (command.equals("/member/login")) {
+        } else if (command.equals("/member/login")) {
             //로그인 처리
             String id = request.getParameter("id");
             String pw = request.getParameter("pw");
@@ -61,7 +60,7 @@ public class MemberController extends HttpServlet {
                 return;
             } else { //로그인 성공
                 HttpSession session = request.getSession(); //사용자에 대한 세션 부여
-                session.setAttribute("id", id);
+                session.setAttribute("member", member);
             }
 
             response.sendRedirect("/board/list");
@@ -89,7 +88,6 @@ public class MemberController extends HttpServlet {
             Member member = new Member(name, id, pw1, pw2, email);
             Member ChkMember = memberService.getMember(id);
 
-
             //아이디 중복 체크
             if (ChkMember.getLogin_id() != null) {
                 //중복
@@ -104,10 +102,14 @@ public class MemberController extends HttpServlet {
                 } else {
                     //가입완료
                     memberService.addMember(member);
-                    response.sendRedirect("/view/member/joinSuccess.jsp");
+                    response.sendRedirect("/view/member/joinSuccess");
                     return;
                 }
             }
+        } else if (command.equals("/member/registrationForm")){
+            view += "/registration.jsp";
+        }else if (command.equals("/member/registration")){
+            //수정 진행
         }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(view);

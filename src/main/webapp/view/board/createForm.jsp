@@ -1,3 +1,6 @@
+
+
+<%@ page import="com.kitri.myservletboard.data.Member" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -22,16 +25,21 @@
                         제목을 입력해주세요.
                     </div>
                 </div>
-
                 <div class="row">
+                    <%
+                        Member member = (Member) session.getAttribute("member");
+                        if (member != null) {%>
+                    <input id="member_id" name="member_id" value="${member.getId()}" hidden="hidden" />
+                    <%}%>
+
                     <div class="col-md-6 mb-3">
                         <label for="name">작성자</label>
-                        <input name="writer" type="text" class="form-control" id="name" placeholder="" value="" required>
+                        <input name="writer" type="text" class="form-control" id="name" placeholder="" value="${member.getName()}" readonly>
                         <div class="invalid-feedback">
-                            작성자를 입력해주세요.
                         </div>
                     </div>
                 </div>
+
                 <div class="mb-3">
                     <label for="content" class="form-label">내용</label>
                     <textarea name="content" id="content" class="form-control" cols="30" rows="5" placeholder="내용을 입력해주세요"></textarea>
@@ -45,9 +53,8 @@
                         <button class="btn btn-secondary btn-block" type="submit">취소</button>
                     </div>
                 </div>
+            </form>
         </div>
-
-        </form>
     </div>
 </div>
 <div class="p-2">

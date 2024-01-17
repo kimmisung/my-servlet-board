@@ -10,14 +10,15 @@
 <div class="container">
     <div class="input-form-backgroud row">
         <div class="input-form col-md-12 mx-auto">
-            <h4 class="mb-3"><b>${게시물 수정}</b></h4>
+            <h4 class="mb-3"><b>게시물 수정</b></h4>
             <hr>
             <br>
             <form class="validation-form" novalidate action="/board/update" method="post">
-
+                <input name="member_id" type="text" class="form-control" id="member_id" hidden value="${board.getMember_id()}" readonly>
                 <div class="mb-3">
                     <label for="title">제목</label>
-                    <input name="title" type="title" class="form-control" id="title" placeholder="" value="${board.getTitle()}" required>
+                    <input name="title" type="title" class="form-control" id="title" placeholder=""
+                           value="${board.getTitle()}" required>
                     <div class="invalid-feedback">
                         제목을 입력해주세요.
                     </div>
@@ -26,7 +27,8 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="name">작성자</label>
-                        <input name="writer" type="text" class="form-control" id="name" placeholder="" value="${board.getWriter()}" readonly>
+                        <input name="writer" type="text" class="form-control" id="name" placeholder=""
+                               value="${board.getWriter()}" readonly>
                         <div class="invalid-feedback">
                             작성자를 입력해주세요.
                         </div>
@@ -35,8 +37,10 @@
                 </div>
                 <div class="mb-3">
                     <label for="content" class="form-label">내용</label>
-                    <textarea name="content" id="content" class="form-control" cols="30" rows="5" placeholder="">${board.getContent()}</textarea>
+                    <textarea name="content" id="content" class="form-control" cols="30" rows="5"
+                              placeholder="">${board.getContent()}</textarea>
                 </div>
+
                 <br>
                 <div class="row">
                     <div class="col-md-6 mb-3">
@@ -46,9 +50,8 @@
                         <button class="btn btn-secondary btn-block" type="submit">취소</button>
                     </div>
                 </div>
+            </form>
         </div>
-
-        </form>
     </div>
 </div>
 <div class="p-2">
@@ -77,6 +80,7 @@
 </script>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
 
 </html>
