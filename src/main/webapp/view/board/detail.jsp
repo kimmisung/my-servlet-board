@@ -1,3 +1,6 @@
+<%@ page import="com.kitri.myservletboard.data.Member" %>
+<%@ page import="com.kitri.myservletboard.data.Board" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -24,7 +27,7 @@
                     &nbsp
                     <div class="pd opacity-75 bg-success-subtle border border-dark rounded-pill"><small>댓글수 : ${board.getCommentCount()}</small></div>
                     <div class="d-flex flex-row flex-fill">
-                        <div class="pd opacity-75 border border-dark rounded-pill">#${board.getId()}</div>
+                        <div class="pd opacity-75 border border-dark rounded-pill">${board.getId()}</div>
                     </div>
                 </div>
                 <div class="p-2 border-bottom">
@@ -43,9 +46,16 @@
                 <div class="d-flex flex-row-reverse mb-3 mr-3">
                     &nbsp
                     &nbsp
+                    <%
+                        Board board = (Board) request.getAttribute("board");
+                        Member member = (Member) session.getAttribute("member");
+                        if (member != null) {
+                            if (board.getMember_id().equals(member.getId())){ <%--이 글이 내가 쓴 글이여야지만 보여지게 조건 설정--%>
+
                     <a href="/board/delete?id=${board.getId()}" class="btn btn-secondary btn-sm" onclick="return confirm('삭제하시겠습니까?')"><small>삭제하기</small></a>
                     &nbsp
                     <a href="/board/updateForm?id=${board.getId()}" class="btn btn-secondary btn-sm"><small>수정하기</small></a>
+                    <%}}%>
                     &nbsp
                     <a href="/board/list" class="btn btn-secondary btn-sm"><small>목록으로</small></a>
                     &nbsp

@@ -9,6 +9,7 @@
 <body>
 <jsp:include page="/view/common/header.jsp"/>
 
+
 <div class="container">
     <div class="input-form-backgroud row">
         <div class="input-form col-md-12 mx-auto">
@@ -19,16 +20,14 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="name">이름</label>
-                        <input type="text" class="form-control" id="name" placeholder="이름을 입력해주세요" value=""
-                               required>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="이름을 입력해주세요" value="" required>
                         <div class="invalid-feedback">
                             이름을 입력해주세요.
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="name">아이디</label>
-                        <input type="text" class="form-control" id="userId" placeholder="아이디를 입력해주세요" value=""
-                               required>
+                        <label for="id">아이디</label>
+                        <input type="text" class="form-control" id="id" name="id" placeholder="아이디를 입력해주세요" value="" required>
                         <div class="invalid-feedback">
                             아이디를 입력해주세요.
                         </div>
@@ -36,17 +35,15 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label for="nickname">비밀번호</label>
-                        <input type="password" class="form-control" id="password" placeholder="비밀번호를 입력해주세요"
-                               value="" required>
+                        <label for="pw1">비밀번호</label>
+                        <input type="password" class="form-control" id="pw1" name="pw1" placeholder="비밀번호를 입력해주세요" value="" required>
                         <div class="invalid-feedback">
                             비밀번호를 입력해주세요.
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="nickname">비밀번호 확인</label>
-                        <input type="password" class="form-control" id="password" placeholder="비밀번호를 한 번 더 입력해주세요"
-                               value="" required>
+                        <label for="pw2">비밀번호 확인</label>
+                        <input type="password" class="form-control" id="pw2" name="pw2" placeholder="비밀번호를 한 번 더 입력해주세요" value="" required>
                         <div class="invalid-feedback">
                             비밀번호를 입력해주세요.
                         </div>
@@ -54,28 +51,12 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="email">이메일</label>
-                    <input type="email" class="form-control" id="email" placeholder="Bootstrap@example.com"
-                           required>
+                    <label for="mail">이메일</label>
+                    <input type="email" class="form-control" id="mail" name="mail" placeholder="Bootstrap@example.com" required>
                     <div class="invalid-feedback">
                         이메일을 입력해주세요.
                     </div>
                 </div>
-
-                <div class="mb-3">
-                    <label for="address">주소</label>
-                    <input type="text" class="form-control" id="address" placeholder="서울특별시 구로구" required>
-                    <div class="invalid-feedback">
-                        주소를 입력해주세요.
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label for="address2">상세주소<span class="text-muted">&nbsp;(필수 아님)</span></label>
-                    <input type="text" class="form-control" id="address2" placeholder="상세주소를 입력해주세요.">
-                </div>
-
-
                 <hr class="mb-4">
                 <div class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input" id="aggrement" required>

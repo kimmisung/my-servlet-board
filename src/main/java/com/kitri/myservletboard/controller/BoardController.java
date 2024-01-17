@@ -26,10 +26,11 @@ public class BoardController extends HttpServlet {
         //브라우저에서 작성한 내용을 불러올 때
         request.setCharacterEncoding("UTF-8");
 
+        //이부분에 httpSession을 제일 위쪽에 정의하면 여러모로 좋은 경우가 있다함
+
         // HTML이 UTF-8 형식이라는 것을 브라우저에게 전달
         response.setContentType("text/html; charset=UTF-8");
         PrintWriter out = response.getWriter();
-
         out.println("<h1>요청을 잘 응답받았습니다!</h1>");
 
         //URL을 파싱해서 어떤 요청인지 파악 -> request
@@ -85,7 +86,8 @@ public class BoardController extends HttpServlet {
             view += "list.jsp";
 
 
-        }   else if (command.equals("/board/createForm")) {
+        }
+        if (command.equals("/board/createForm")) {
             view += "createForm.jsp";
 
         } else if (command.contains("/board/updateForm")) {
@@ -103,17 +105,15 @@ public class BoardController extends HttpServlet {
             Long id = Long.parseLong(request.getParameter("id"));
             String title = request.getParameter("title");
             String content = request.getParameter("content");
+            Long member_id = Long.parseLong(request.getParameter("member_id")); //memberid를 안받고 주어도 됨! jsp에서도 hidden으로 주기
 
             //board로 넘겨주는 것은 올바른 방법은 아님 -> dto, VO형태의 데이터 타입을 사용할 예정
-            Board board = new Board(id, title, content, null, LocalDateTime.now(), 0,0);
+            Board board = new Board(id, title, content, null, LocalDateTime.now(), 0,0,member_id);
             boardService.updateBoard(board);
 
 //          리다이렉트로 리스트로 보내주기
             response.sendRedirect("/board/list");
             return;
-
-
-
 
 
         } else if (command.equals("/board/create")) {
@@ -122,13 +122,14 @@ public class BoardController extends HttpServlet {
 
             String title = request.getParameter("title"); //제목 (.jsp파일에 지정된 name을 보면된다
             String content = request.getParameter("content"); //내용
-            String writer = request.getParameter("writer"); //작성자
+            String writer = request.getParameter("writer"); //작성자를 세션에서 가져오는게 무결성에 위배되지 않음
+            String memberId = request.getParameter("member_id");
 
             //보드 객체로 넘겨주기로 약속했기 때문에, Board 객체를 만들어 주어야 한다
             //id -> null을 넣어줄 수 있는 것은 object 타입이여서 가능 (고유의 식별자이기 때문에 따로 지정하지 않을 예정)
             //조회수와 댓글수는 처음 생성 시 0으로 주면 됨
             //게시판 객체 생성
-            Board board = new Board(null, title, content, writer, LocalDateTime.now(), 0, 0);
+            Board board = new Board(null, title, content, writer, LocalDateTime.now(), 0, 0, Long.parseLong(memberId));
             boardService.addBoard(board);
 
             //생성된지 확인하려면 list로 보내주기
@@ -155,12 +156,6 @@ public class BoardController extends HttpServlet {
             //board 데이터를 detail.jsp 에 전달하기 위해 어딘가에 담아줘야한다.
             request.setAttribute("board", board);
             view += "detail.jsp";
-        } else if (command.equals("/board/join")) {
-
-        } else if (command.equals("/board/login")) {
-
-        } else if (command.equals("/board/registration")) {
-
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher(view);
         dispatcher.forward(request, response);

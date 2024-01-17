@@ -1,4 +1,4 @@
-package com.kitri.myservletboard.dao;
+package com.kitri.myservletboard.dao.board;
 
 import com.kitri.myservletboard.data.Board;
 import com.kitri.myservletboard.data.Pagination;
@@ -322,15 +322,15 @@ public class BoardJdbcDao implements BoardDao {
 
 
             while (rs.next()) {
-                Long id_ = rs.getLong("id");
-                String title_ = rs.getString("title");
-                String content_ = rs.getString("content");
-                String writer_ = rs.getString("writer");
-                LocalDateTime createdAt_ = rs.getTimestamp("created_at").toLocalDateTime();
-                int viewCount_ = rs.getInt("view_Count");
-                int commentCount_ = rs.getInt("comment_count");
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                String writer = rs.getString("writer");
+                LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
+                int viewCount = rs.getInt("view_Count");
+                int commentCount = rs.getInt("comment_count");
+                Long member_id = rs.getLong("member_id");
 
-                board = new Board(id_, title_, content_, writer_, createdAt_, viewCount_, commentCount_);
+                board = new Board(id, title, content, writer, createdAt, viewCount, commentCount, member_id);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -347,11 +347,12 @@ public class BoardJdbcDao implements BoardDao {
 
         try {
             connection = connectDB();
-            String sql = "INSERT INTO board (title, content, writer) VALUES (?,?,?)";
+            String sql = "INSERT INTO board (title, content, writer, member_id) VALUES (?,?,?,?)";
             ps = connection.prepareStatement(sql);
             ps.setString(1, board.getTitle());
             ps.setString(2, board.getContent());
             ps.setString(3, board.getWriter());
+            ps.setLong(4, board.getMember_id());
             ps.executeUpdate();
 
         } catch (Exception e) {

@@ -10,12 +10,12 @@
 <jsp:include page="/view/common/header.jsp"/>
 
 <div class="login-form">
-    <form>
+    <form method="POST" action="/member/login">
         <h2><b>Bootstrap</b></h2>
         <hr>
         <br>
-        <input type="text" name="userId" class="text-field" placeholder="아이디를 입력해주세요">
-        <input type="password" name="userPassword" class="text-field" placeholder="비밀번호를 입력해주세요">
+        <input type="text" name="id" id="id" class="text-field" placeholder="아이디를 입력해주세요">
+        <input type="password" name="pw" id="pw" class="text-field" placeholder="비밀번호를 입력해주세요">
         <input type="submit" value="로그인" class="submit-btn btn btn-secondary btn-block">
     </form>
 
@@ -24,6 +24,8 @@
     </div>
 </div>
 
+
+
 <div class="p-2">
     <div class="footer">
         <footer>
@@ -31,11 +33,11 @@
         </footer>
     </div>
 </div>
-
-</body>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous">
+
+</script>
 
 </html>

@@ -16,6 +16,7 @@
         <div class="input-form col-md-12 mx-auto">
             <h4 class="mb-3"><b>회원 가입</b></h4>
             <hr>
+            <h6 style="text-align: center"><b>아이디가 중복입니다! 다시 확인해주세요 </b></h6>
             <br>
             <form class="validation-form" novalidate method="post" action="/member/join">
                 <div class="row">
