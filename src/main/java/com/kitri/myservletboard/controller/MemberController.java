@@ -109,7 +109,17 @@ public class MemberController extends HttpServlet {
         } else if (command.equals("/member/registrationForm")){
             view += "/registration.jsp";
         }else if (command.equals("/member/registration")){
-            //수정 진행
+
+            String name = request.getParameter("name");
+            String id = request.getParameter("id");
+            String pw1 = request.getParameter("pw1");
+            String pw2 = request.getParameter("pw2");
+            String email = request.getParameter("mail");
+
+            Member member = new Member(name, id, pw1, pw2, email);
+            Member ChkMember = memberService.getMember(id);
+
+
         }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(view);

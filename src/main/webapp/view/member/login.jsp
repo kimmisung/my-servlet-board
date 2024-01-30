@@ -5,7 +5,6 @@
     <jsp:param name="title" value="게시판 목록"/>
 </jsp:include>
 
-
 <body>
 <jsp:include page="/view/common/header.jsp"/>
 

@@ -1,8 +1,10 @@
 package com.kitri.myservletboard.controller;
 
 import com.kitri.myservletboard.data.Board;
+import com.kitri.myservletboard.data.Comment;
 import com.kitri.myservletboard.data.Pagination;
 import com.kitri.myservletboard.service.BoardService;
+import com.kitri.myservletboard.service.CommentService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 @WebServlet("/board/*")
 public class BoardController extends HttpServlet {
     BoardService boardService = BoardService.getInstance();
+    CommentService commentService = CommentService.getInstance();
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -154,6 +157,10 @@ public class BoardController extends HttpServlet {
             String id = request.getParameter("id"); //게시판 번호를 얻기엔 getParameter 편리
             Board board = boardService.getBoard(Long.parseLong(id));
             //board 데이터를 detail.jsp 에 전달하기 위해 어딘가에 담아줘야한다.
+
+            ArrayList<Comment> comments = commentService.getComment(Long.parseLong(id));
+            request.setAttribute("comments", comments);
+
             request.setAttribute("board", board);
             view += "detail.jsp";
         }
