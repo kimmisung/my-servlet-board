@@ -1,5 +1,6 @@
 package com.kitri.myservletboard.dao.board;
 
+import com.kitri.myservletboard.dao.comment.CommentJdbcDao;
 import com.kitri.myservletboard.data.Board;
 import com.kitri.myservletboard.data.Pagination;
 
@@ -10,12 +11,11 @@ import java.util.ArrayList;
 
 public class BoardJdbcDao implements BoardDao {
 
-
     private static final BoardJdbcDao instance = new BoardJdbcDao(); //싱글톤 생성
-
     public static BoardJdbcDao getInstance() {
         return instance;
     }
+
 
     private BoardJdbcDao() {
     }

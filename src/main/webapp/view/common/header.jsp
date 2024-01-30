@@ -11,14 +11,15 @@
         <ul class="nav-items">
             <li><a href="/board/list">게시글목록</a></li>
             <li><a href="/member/joinForm">회원가입</a></li>
-            <li><a href="/member/registrationForm">회원정보수정</a></li>
+
             <%
                 Member member = (Member) session.getAttribute("member");
                 if (member != null){
                     if (member.getLogin_id() != null) {%>
 
             <%--네비바에 로그아웃이라고 보이게 구현--%>
-            <a href="/member/logout">로그아웃</a>
+            <li><a href="/member/registrationForm">회원정보수정</a></li>
+            <li><a href="/member/logout">로그아웃</a></li>
 
             <%}} else {%>
             <li><a href="/member/loginForm">로그인</a></li>
